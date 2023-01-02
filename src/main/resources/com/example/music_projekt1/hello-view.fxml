@@ -3,10 +3,22 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="244.0" prefWidth="634.0" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.music_projekt1.HelloController">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="334.0" prefWidth="501.0" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.music_projekt1.HelloController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
-    <Button fx:id="button" alignment="CENTER" onAction="#openRegisterWindow" prefHeight="34.0" prefWidth="147.0" text="Registriraj se" textAlignment="CENTER" />
+   <SplitPane prefHeight="179.0" prefWidth="461.0">
+      <items>
+         <Label alignment="CENTER" contentDisplay="CENTER" lineSpacing="1.0" prefHeight="140.0" prefWidth="464.0" text="EVIDENCA ZDRAVNIŠKIH ORDINACIJ " textAlignment="CENTER" textFill="#5cd16c" wrapText="true">
+            <font>
+               <Font size="29.0" />
+            </font>
+         </Label>
+
+      </items>
+   </SplitPane>
+    <Button fx:id="btn_register" alignment="CENTER" onAction="#openRegisterWindow" prefHeight="34.0" prefWidth="147.0" text="REGISTER" textAlignment="CENTER" />
+    <Button fx:id="btn_login" alignment="CENTER" onAction="#openLoginWindow" prefHeight="34.0" prefWidth="147.0" text="LOGIN" textAlignment="CENTER" />
 </VBox>
