@@ -21,13 +21,23 @@ public class LoginWindow {
 
 
     @FXML
-    protected void getData() throws NoSuchAlgorithmException {
+    protected void getData() throws NoSuchAlgorithmException, IOException {
         System.out.println(username.getText());
         System.out.println(password1.getText());
         boolean isLogin = JavaPostgreSql.Login(username.getText(), password1.getText());
 
         if (isLogin) {
             System.out.println("Login successful");
+
+            Stage currentStage = (Stage) btn_cancel.getScene().getWindow();
+            currentStage.close();
+
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(".fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
+            Stage stage = new Stage();
+            stage.setTitle("EVIDENCA ZDRAVNIŠKIH ORDINACIJ");
+            stage.setScene(scene);
+            stage.show();
         }
         else{
             System.out.println("Login failed");

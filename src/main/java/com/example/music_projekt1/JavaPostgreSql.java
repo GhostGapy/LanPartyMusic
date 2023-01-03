@@ -44,9 +44,36 @@ public class JavaPostgreSql {
             alert.showAndWait();
 
         }
+    }
 
+    public static boolean freeUsername(String userName) throws NoSuchAlgorithmException {
+        String url = "jdbc:postgresql://ep-purple-breeze-177741.eu-central-1.aws.neon.tech/neondb";
+        String user = "GhostGapy";
+        String password = "G4XZhDPTB0WC";
 
+        String username = userName;
 
+        String query = "SELECT username FROM users WHERE username = ?";
+
+        try (Connection con = DriverManager.getConnection(url, user, password);
+             PreparedStatement pst = con.prepareStatement(query)) {
+
+            pst.setString(1, username);
+            ResultSet rs = pst.executeQuery();
+
+            return rs.next();
+        } catch (SQLException ex) {
+
+            Logger lgr = Logger.getLogger(JavaPostgreSql.class.getName());
+            lgr.log(Level.SEVERE, ex.getMessage(), ex);
+
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setHeaderText("There was an error");
+            alert.setContentText("Please try again");
+            alert.showAndWait();
+            return false;
+        }
     }
 
     public static boolean Login(String userName, String userPassword1) throws NoSuchAlgorithmException {
@@ -67,8 +94,8 @@ public class JavaPostgreSql {
             if (rs.next()) {
                 String correctPassword = rs.getString("password1");
                 String pass1 = PasswordHasher.hashPassword(userPassword1);
-                if (pass1.equals(correctPassword)) {
-
+                if (pass1.equals(correctPassword))
+                {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Successful Login");
                     alert.setHeaderText("You have successfully logged in");

@@ -31,28 +31,62 @@ public class RegisterWindow {
         System.out.println(password1.getText());
         System.out.println(password2.getText());
 
-        if ((password1.getText()).equals(password2.getText())) {
-            System.out.println("Passwords are the same");
-            JavaPostgreSql.Register(username.getText(), password1.getText());
+        if(!username.getText().isEmpty() || !password1.getText().isEmpty() || !password2.getText().isEmpty()){
+            if (!(JavaPostgreSql.freeUsername(username.getText()))){
+                System.out.println("Username is free");
+                if ((password1.getText()).equals(password2.getText()))
+                {
+                    System.out.println("Passwords are the same");
+                    JavaPostgreSql.Register(username.getText(), password1.getText());
 
+                    Stage currentStage = (Stage) btn_register_complete.getScene().getWindow();
+                    currentStage.close();
 
-            Stage currentStage = (Stage) btn_register_complete.getScene().getWindow();
-            currentStage.close();
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("hello-view.fxml"));
+                    Scene scene = new Scene(fxmlLoader.load());
+                    Stage stage = new Stage();
+                    stage.setTitle("EVIDENCA ZDRAVNIŠKIH ORDINACIJ");
+                    stage.setScene(scene);
+                    stage.show();
+                }
+                else
+                {
+                    System.out.println("Passwords are not the same");
+                    username.clear();
+                    password1.clear();
+                    password2.clear();
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText("Passwords are not the same");
+                    alert.setContentText("Please try again");
+                    alert.showAndWait();
+                }
+            }
+            else{
+                System.out.println("Username is already taken");
+                username.clear();
+                password1.clear();
+                password2.clear();
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Username is already taken");
+                alert.setContentText("Please try again");
+                alert.showAndWait();
 
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("hello-view.fxml"));
-            Scene scene = new Scene(fxmlLoader.load());
-            Stage stage = new Stage();
-            stage.setTitle("EVIDENCA ZDRAVNIŠKIH ORDINACIJ");
-            stage.setScene(scene);
-            stage.show();
+            }
+
         }
-        else{
-            System.out.println("Passwords are not the same");
+        else
+        {
+            System.out.println("Please fill all fields");
             username.clear();
             password1.clear();
             password2.clear();
-
-
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Please fill all fields");
+            alert.setContentText("Please try again");
+            alert.showAndWait();
         }
 
 
