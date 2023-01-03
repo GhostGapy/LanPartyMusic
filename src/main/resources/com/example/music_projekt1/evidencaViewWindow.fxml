@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="532.0" prefWidth="1167.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="600.0">
+         <children>
+            <Label prefHeight="44.0" prefWidth="293.0" text="   Prijavljeni ste kot:">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="864.0">
+               <children>
+                  <Button alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="15.0" prefWidth="102.0" text="LOGOUT" textAlignment="CENTER">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+      </HBox>
+      <SplitPane prefHeight="470.0" prefWidth="800.0">
+         <items>
+            <TableView prefHeight="389.0" prefWidth="662.0">
+              <columns>
+                <TableColumn fx:id="id" prefWidth="53.0" text="ID" />
+                <TableColumn fx:id="ime" prefWidth="344.0" text="IME" />
+                  <TableColumn fx:id="zdravniki" minWidth="0.0" prefWidth="214.0" text="ZDRAVNIK" />
+                  <TableColumn fx:id="naslov" prefWidth="197.0" text="NASLOV" />
+                  <TableColumn fx:id="kraj" prefWidth="181.0" text="KRAJ" />
+                  <TableColumn fx:id="vrsta" prefWidth="156.0" text="VRSTA" />
+              </columns>
+            </TableView>
+         </items>
+         <VBox.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" />
+         </VBox.margin>
+      </SplitPane>
+   </children>
+</VBox>

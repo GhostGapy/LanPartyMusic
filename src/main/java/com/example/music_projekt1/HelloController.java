@@ -18,8 +18,6 @@ public class HelloController {
     private Button btn_login;
 
 
-
-
     @FXML
     protected void openRegisterWindow() throws IOException {
         Stage currentStage = (Stage) btn_register.getScene().getWindow();
@@ -28,6 +26,7 @@ public class HelloController {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("registerWindow.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         Stage stage = new Stage();
+        stage.setResizable(false);
         stage.setTitle("REGISTER");
         stage.setScene(scene);
         stage.show();
@@ -42,6 +41,7 @@ public class HelloController {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("loginWindow.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         Stage stage = new Stage();
+        stage.setResizable(false);
         stage.setTitle("LOGIN");
         stage.setScene(scene);
         stage.show();

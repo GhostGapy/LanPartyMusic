@@ -32,9 +32,10 @@ public class LoginWindow {
             Stage currentStage = (Stage) btn_cancel.getScene().getWindow();
             currentStage.close();
 
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(".fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("evidencaViewWindow.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
             Stage stage = new Stage();
+            stage.setResizable(false);
             stage.setTitle("EVIDENCA ZDRAVNIŠKIH ORDINACIJ");
             stage.setScene(scene);
             stage.show();
@@ -55,6 +56,7 @@ public class LoginWindow {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("hello-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         Stage stage = new Stage();
+        stage.setResizable(false);
         stage.setTitle("EVIDENCA ZDRAVNIŠKIH ORDINACIJ");
         stage.setScene(scene);
         stage.show();
