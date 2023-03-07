@@ -88,7 +88,6 @@ public class RegisterWindow {
             alert.showAndWait();
         }
 
-
     }
 
 }
