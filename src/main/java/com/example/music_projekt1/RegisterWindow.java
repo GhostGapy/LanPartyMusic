@@ -16,7 +16,9 @@ public class RegisterWindow {
     @FXML
     private Button btn_register_complete;
     @FXML
-    private TextField username;
+    private TextField name;
+    @FXML
+    private TextField surname;
     @FXML
     private TextField password1;
     @FXML
@@ -27,16 +29,17 @@ public class RegisterWindow {
 
     @FXML
     protected void getData() throws NoSuchAlgorithmException, IOException {
-        System.out.println(username.getText());
+        System.out.println(name.getText());
+        System.out.println(surname.getText());
         System.out.println(password1.getText());
         System.out.println(password2.getText());
 
-        if(!username.getText().isEmpty() || !password1.getText().isEmpty() || !password2.getText().isEmpty()){
-            if (!(JavaPostgreSql.freeUsername(username.getText()))){
+        if(!name.getText().isEmpty() || !surname.getText().isEmpty() || !password1.getText().isEmpty() || !password2.getText().isEmpty()){
+            if (!(JavaPostgreSql.freeName(name.getText(), surname.getText()))){
                 if ((password1.getText()).equals(password2.getText()))
                 {
                     System.out.println("Passwords are the same");
-                    JavaPostgreSql.Register(username.getText(), password1.getText());
+                    JavaPostgreSql.Register(name.getText(), surname.getText(),  password1.getText());
 
                     Stage currentStage = (Stage) btn_register_complete.getScene().getWindow();
                     currentStage.close();
@@ -51,7 +54,8 @@ public class RegisterWindow {
                 else
                 {
                     System.out.println("Passwords are not the same");
-                    username.clear();
+                    name.clear();
+                    surname.clear();
                     password1.clear();
                     password2.clear();
                     Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -63,7 +67,8 @@ public class RegisterWindow {
             }
             else{
                 System.out.println("Username is already taken");
-                username.clear();
+                name.clear();
+                surname.clear();
                 password1.clear();
                 password2.clear();
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -78,7 +83,8 @@ public class RegisterWindow {
         else
         {
             System.out.println("Please fill all fields");
-            username.clear();
+            name.clear();
+            surname.clear();
             password1.clear();
             password2.clear();
             Alert alert = new Alert(Alert.AlertType.ERROR);
