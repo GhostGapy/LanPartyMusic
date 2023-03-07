@@ -38,7 +38,7 @@ public class LoginWindow {
             Scene scene = new Scene(fxmlLoader.load());
             Stage stage = new Stage();
             stage.setResizable(false);
-            stage.setTitle("EVIDENCA ZDRAVNIŠKIH ORDINACIJ");
+            stage.setTitle("LAN PARTY");
             stage.setScene(scene);
             stage.show();
         }
@@ -59,7 +59,7 @@ public class LoginWindow {
         Scene scene = new Scene(fxmlLoader.load());
         Stage stage = new Stage();
         stage.setResizable(false);
-        stage.setTitle("EVIDENCA ZDRAVNIŠKIH ORDINACIJ");
+        stage.setTitle("LAN PARTY");
         stage.setScene(scene);
         stage.show();
     }
