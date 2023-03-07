@@ -29,7 +29,7 @@ public class JavaPostgreSql {
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Successful Registered");
-            alert.setHeaderText("You have successfully registered");
+            alert.setHeaderText("You have successfully registered, your username is: " + name.toLowerCase() + "." + surname.toLowerCase());
             alert.setContentText("You can now login");
             alert.showAndWait();
         } catch (SQLException ex) {
@@ -75,19 +75,17 @@ public class JavaPostgreSql {
         }
     }
 
-    public static boolean Login(String userName, String userPassword1) throws NoSuchAlgorithmException {
+    public static boolean Login(String _username, String userPassword1) throws NoSuchAlgorithmException {
         String url = "jdbc:postgresql://rogue.db.elephantsql.com/demvidab";
         String user = "demvidab";
         String password = "ve4aywwgYviI10jTDn92Q8ABSZBcHtoO";
-
-        String username = userName;
 
         String query = "SELECT password FROM users WHERE username = ?";
 
         try (Connection con = DriverManager.getConnection(url, user, password);
              PreparedStatement pst = con.prepareStatement(query)) {
 
-            pst.setString(1, username);
+            pst.setString(1, _username);
             ResultSet rs = pst.executeQuery();
 
             if (rs.next()) {
