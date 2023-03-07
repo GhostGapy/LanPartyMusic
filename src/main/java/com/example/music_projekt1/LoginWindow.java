@@ -29,6 +29,8 @@ public class LoginWindow {
         if (isLogin) {
             System.out.println("Login successful");
 
+            user_saved.setUsername(username.getText());
+
             Stage currentStage = (Stage) btn_cancel.getScene().getWindow();
             currentStage.close();
 

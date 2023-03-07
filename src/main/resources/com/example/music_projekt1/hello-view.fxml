@@ -11,7 +11,7 @@
     </padding>
    <SplitPane prefHeight="179.0" prefWidth="461.0">
       <items>
-         <Label alignment="CENTER" contentDisplay="CENTER" lineSpacing="1.0" prefHeight="140.0" prefWidth="464.0" text="EVIDENCA ZDRAVNIŠKIH ORDINACIJ " textAlignment="CENTER" textFill="#5cd16c" wrapText="true">
+         <Label alignment="CENTER" contentDisplay="CENTER" lineSpacing="1.0" prefHeight="140.0" prefWidth="464.0" text="LAN PARTY" textAlignment="CENTER" textFill="#5cd16c" wrapText="true">
             <font>
                <Font size="29.0" />
             </font>

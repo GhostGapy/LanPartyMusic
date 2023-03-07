@@ -33,7 +33,6 @@ public class RegisterWindow {
 
         if(!username.getText().isEmpty() || !password1.getText().isEmpty() || !password2.getText().isEmpty()){
             if (!(JavaPostgreSql.freeUsername(username.getText()))){
-                System.out.println("Username is free");
                 if ((password1.getText()).equals(password2.getText()))
                 {
                     System.out.println("Passwords are the same");
@@ -45,7 +44,7 @@ public class RegisterWindow {
                     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("hello-view.fxml"));
                     Scene scene = new Scene(fxmlLoader.load());
                     Stage stage = new Stage();
-                    stage.setTitle("EVIDENCA ZDRAVNIŠKIH ORDINACIJ");
+                    stage.setTitle("Lan Party");
                     stage.setScene(scene);
                     stage.show();
                 }

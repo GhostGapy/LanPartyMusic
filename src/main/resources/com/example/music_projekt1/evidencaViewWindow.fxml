@@ -5,18 +5,18 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="532.0" prefWidth="1167.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="532.0" prefWidth="1167.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.music_projekt1.EvidencaViewWindow">
    <children>
       <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="600.0">
          <children>
-            <Label prefHeight="44.0" prefWidth="293.0" text="   Prijavljeni ste kot:">
+            <Label fx:id="log_name" prefHeight="44.0" prefWidth="293.0" text="   Prijavljeni ste kot:">
                <font>
                   <Font size="15.0" />
                </font>
             </Label>
             <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="864.0">
                <children>
-                  <Button alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="15.0" prefWidth="102.0" text="LOGOUT" textAlignment="CENTER">
+                  <Button fx:id="btn_logout" alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#cancel" prefHeight="15.0" prefWidth="102.0" text="LOGOUT" textAlignment="CENTER">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
@@ -27,7 +27,7 @@
       </HBox>
       <SplitPane prefHeight="470.0" prefWidth="800.0">
          <items>
-            <TableView prefHeight="389.0" prefWidth="662.0">
+            <TableView fx:id="table" prefHeight="389.0" prefWidth="662.0">
               <columns>
                 <TableColumn fx:id="id" prefWidth="53.0" text="ID" />
                 <TableColumn fx:id="ime" prefWidth="344.0" text="IME" />

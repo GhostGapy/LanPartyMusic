@@ -4,22 +4,23 @@ import javafx.scene.control.Alert;
 
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class JavaPostgreSql {
     public static void Register(String userName, String userPassword1) throws NoSuchAlgorithmException {
-        String url = "jdbc:postgresql://ep-purple-breeze-177741.eu-central-1.aws.neon.tech/neondb";
-        String user = "GhostGapy";
-        String password = "G4XZhDPTB0WC";
+        String url = "jdbc:postgresql://rogue.db.elephantsql.com/demvidab";
+        String user = "demvidab";
+        String password = "ve4aywwgYviI10jTDn92Q8ABSZBcHtoO";
 
         String username = userName;
         String pass1 = PasswordHasher.hashPassword(userPassword1);
 
-        String query="INSERT INTO users(username, password1) VALUES(?, ?)";
+        String query = "INSERT INTO users(username, password) VALUES(?, ?)";
 
-        try(Connection con = DriverManager.getConnection(url, user, password);
-            PreparedStatement pst = con.prepareStatement(query)){
+        try (Connection con = DriverManager.getConnection(url, user, password);
+             PreparedStatement pst = con.prepareStatement(query)) {
 
             pst.setString(1, username);
             pst.setString(2, pass1);
@@ -31,8 +32,7 @@ public class JavaPostgreSql {
             alert.setHeaderText("You have successfully registered");
             alert.setContentText("You can now login");
             alert.showAndWait();
-        }
-        catch (SQLException ex){
+        } catch (SQLException ex) {
 
             Logger lgr = Logger.getLogger(JavaPostgreSql.class.getName());
             lgr.log(Level.SEVERE, ex.getMessage(), ex);
@@ -46,10 +46,10 @@ public class JavaPostgreSql {
         }
     }
 
-    public static boolean freeUsername(String userName) throws NoSuchAlgorithmException {
-        String url = "jdbc:postgresql://ep-purple-breeze-177741.eu-central-1.aws.neon.tech/neondb";
-        String user = "GhostGapy";
-        String password = "G4XZhDPTB0WC";
+    public static boolean freeUsername(String userName){
+        String url = "jdbc:postgresql://rogue.db.elephantsql.com/demvidab";
+        String user = "demvidab";
+        String password = "ve4aywwgYviI10jTDn92Q8ABSZBcHtoO";
 
         String username = userName;
 
@@ -69,7 +69,7 @@ public class JavaPostgreSql {
 
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ERROR");
-            alert.setHeaderText("There was an error");
+            alert.setHeaderText("There was an error / username is taken");
             alert.setContentText("Please try again");
             alert.showAndWait();
             return false;
@@ -83,10 +83,10 @@ public class JavaPostgreSql {
 
         String username = userName;
 
-        String query="SELECT password1 FROM users WHERE username = ?";
+        String query = "SELECT password1 FROM users WHERE username = ?";
 
-        try(Connection con = DriverManager.getConnection(url, user, password);
-            PreparedStatement pst = con.prepareStatement(query)){
+        try (Connection con = DriverManager.getConnection(url, user, password);
+             PreparedStatement pst = con.prepareStatement(query)) {
 
             pst.setString(1, username);
             ResultSet rs = pst.executeQuery();
@@ -94,8 +94,7 @@ public class JavaPostgreSql {
             if (rs.next()) {
                 String correctPassword = rs.getString("password1");
                 String pass1 = PasswordHasher.hashPassword(userPassword1);
-                if (pass1.equals(correctPassword))
-                {
+                if (pass1.equals(correctPassword)) {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Successful Login");
                     alert.setHeaderText("You have successfully logged in");
@@ -103,8 +102,7 @@ public class JavaPostgreSql {
                     alert.showAndWait();
 
                     return true;
-                }
-                else {
+                } else {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("ERROR");
                     alert.setHeaderText("Passwords do not match");
@@ -123,13 +121,41 @@ public class JavaPostgreSql {
                 alert.showAndWait();
                 return false;
             }
-        }
-        catch (SQLException ex)
-        {
+        } catch (SQLException ex) {
             ex.printStackTrace();
             return false;
 
         }
 
     }
+
+    public static String[] getDatabase() throws SQLException {
+        String url = "jdbc:postgresql://ep-purple-breeze-177741.eu-central-1.aws.neon.tech/neondb";
+        String user = "GhostGapy";
+        String password = "G4XZhDPTB0WC";
+
+        String username = "";
+
+        String query = "SELECT username FROM users WHERE username = ?";
+
+        try (Connection con = DriverManager.getConnection(url, user, password);
+             PreparedStatement pst = con.prepareStatement(query)) {
+
+            pst.setString(1, username);
+
+        } catch (SQLException ex) {
+
+            Logger lgr = Logger.getLogger(JavaPostgreSql.class.getName());
+            lgr.log(Level.SEVERE, ex.getMessage(), ex);
+
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setHeaderText("There was an error");
+            alert.setContentText("Please try again");
+            alert.showAndWait();
+        }
+
+        return new String[0];
+    }
 }
+
