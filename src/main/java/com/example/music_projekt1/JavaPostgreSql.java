@@ -77,13 +77,13 @@ public class JavaPostgreSql {
     }
 
     public static boolean Login(String userName, String userPassword1) throws NoSuchAlgorithmException {
-        String url = "jdbc:postgresql://ep-purple-breeze-177741.eu-central-1.aws.neon.tech/neondb";
-        String user = "GhostGapy";
-        String password = "G4XZhDPTB0WC";
+        String url = "jdbc:postgresql://rogue.db.elephantsql.com/demvidab";
+        String user = "demvidab";
+        String password = "ve4aywwgYviI10jTDn92Q8ABSZBcHtoO";
 
         String username = userName;
 
-        String query = "SELECT password1 FROM users WHERE username = ?";
+        String query = "SELECT password FROM users WHERE username = ?";
 
         try (Connection con = DriverManager.getConnection(url, user, password);
              PreparedStatement pst = con.prepareStatement(query)) {
@@ -92,7 +92,7 @@ public class JavaPostgreSql {
             ResultSet rs = pst.executeQuery();
 
             if (rs.next()) {
-                String correctPassword = rs.getString("password1");
+                String correctPassword = rs.getString("password");
                 String pass1 = PasswordHasher.hashPassword(userPassword1);
                 if (pass1.equals(correctPassword)) {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
