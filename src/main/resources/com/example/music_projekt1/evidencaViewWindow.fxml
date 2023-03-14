@@ -1,41 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="532.0" prefWidth="1167.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.music_projekt1.EvidencaViewWindow">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="532.0" prefWidth="788.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.music_projekt1.EvidencaViewWindow">
    <children>
-      <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="600.0">
+      <GridPane alignment="TOP_RIGHT">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
          <children>
-            <Label fx:id="log_name" prefHeight="44.0" prefWidth="293.0" text="   Prijavljeni ste kot:">
+            <Label fx:id="log_name" prefHeight="44.0" prefWidth="686.0" text="   Prijavljeni ste kot:">
                <font>
                   <Font size="15.0" />
                </font>
             </Label>
-            <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="864.0">
-               <children>
-                  <Button fx:id="btn_logout" alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#cancel" prefHeight="15.0" prefWidth="102.0" text="LOGOUT" textAlignment="CENTER">
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                  </Button>
-               </children>
-            </HBox>
+            <Button fx:id="btn_logout" alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#cancel" prefHeight="25.0" prefWidth="94.0" text="LOGOUT" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="CENTER" />
          </children>
-      </HBox>
-      <SplitPane prefHeight="470.0" prefWidth="800.0">
+         <VBox.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" />
+         </VBox.margin>
+      </GridPane>
+      <SplitPane dividerPositions="0.5" prefHeight="433.0" prefWidth="768.0">
          <items>
-            <TableView fx:id="table" prefHeight="389.0" prefWidth="662.0">
+            <TableView fx:id="table_single" prefHeight="468.0" prefWidth="773.0">
               <columns>
-                <TableColumn fx:id="id" prefWidth="53.0" text="ID" />
-                <TableColumn fx:id="ime" prefWidth="344.0" text="IME" />
-                  <TableColumn fx:id="zdravniki" minWidth="0.0" prefWidth="214.0" text="ZDRAVNIK" />
-                  <TableColumn fx:id="naslov" prefWidth="197.0" text="NASLOV" />
-                  <TableColumn fx:id="kraj" prefWidth="181.0" text="KRAJ" />
-                  <TableColumn fx:id="vrsta" prefWidth="156.0" text="VRSTA" />
+                <TableColumn fx:id="id_single" prefWidth="53.0" text="ID" />
+                <TableColumn fx:id="game_single" prefWidth="344.0" text="SOLO GAMES" />
               </columns>
+            </TableView>
+            <TableView fx:id="table_team" prefHeight="468.0" prefWidth="773.0">
+               <columns>
+                  <TableColumn fx:id="id_team" prefWidth="53.0" text="ID" />
+                  <TableColumn fx:id="game_team" prefWidth="344.0" text="TEAM GAMES" />
+               </columns>
             </TableView>
          </items>
          <VBox.margin>

@@ -1,5 +1,7 @@
 package com.example.music_projekt1;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 
 import java.security.NoSuchAlgorithmException;
@@ -154,5 +156,33 @@ public class JavaPostgreSql {
 
         return new String[0];
     }
+
+    public static ObservableList<ObservableList<String>> getGames(boolean x) throws SQLException {
+        String url = "jdbc:postgresql://rogue.db.elephantsql.com/demvidab";
+        String user = "demvidab";
+        String password = "ve4aywwgYviI10jTDn92Q8ABSZBcHtoO";
+
+        ObservableList<ObservableList<String>> data = FXCollections.observableArrayList();
+        String query;
+        if(x)
+        {
+            query = "SELECT id, name FROM games WHERE team_size = 1";
+        }
+        else{
+            query = "SELECT id, name FROM games WHERE team_size > 1";
+        }
+        try (Connection con = DriverManager.getConnection(url, user, password);
+             PreparedStatement pst = con.prepareStatement(query);
+             ResultSet rs = pst.executeQuery()) {
+            while (rs.next()) {
+                String name = rs.getString("name");
+                String id = rs.getString("id");
+                ObservableList<String> row = FXCollections.observableArrayList(id, name);
+                data.add(row);
+            }
+        }
+        return data;
+    }
+
 }
 

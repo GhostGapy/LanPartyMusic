@@ -1,5 +1,7 @@
 package com.example.music_projekt1;
 
+import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,34 +14,48 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class EvidencaViewWindow {
 
     @FXML
     public Label log_name;
+    @FXML
+    public Label test;
+    @FXML
+    public TableView<ObservableList<String>> table_single;
+    @FXML
+    public TableColumn<ObservableList<String>, String> id_single;
+    @FXML
+    public TableColumn<ObservableList<String>, String> game_single;
+
+    @FXML
+    public TableView<ObservableList<String>> table_team;
+    @FXML
+    public TableColumn<ObservableList<String>, String> id_team;
+    @FXML
+    public TableColumn<ObservableList<String>, String> game_team;
 
     @FXML
     public Button btn_logout;
 
-    public TableView<evidenca> table;
-    public TableColumn<evidenca, Integer> id;
-    public TableColumn<evidenca, String> ime;
-    public TableColumn<evidenca, String> zdravniki;
-    public TableColumn<evidenca, String> naslov;
-    public TableColumn<evidenca, String> kraj;
-    public TableColumn<evidenca, String> vrsta;
 
 
-    public void initialize() {
-        log_name.setText("   Prijavljeni ste kot:  " + user_saved.getUsername());
-        id.setCellValueFactory(new PropertyValueFactory<evidenca, Integer>("id"));
-        ime.setCellValueFactory(new PropertyValueFactory<evidenca, String>("ime"));
-        zdravniki.setCellValueFactory(new PropertyValueFactory<evidenca, String>("zdravniki"));
-        naslov.setCellValueFactory(new PropertyValueFactory<evidenca, String>("naslov"));
-        kraj.setCellValueFactory(new PropertyValueFactory<evidenca, String>("kraj"));
-        vrsta.setCellValueFactory(new PropertyValueFactory<evidenca, String>("vrsta"));
-        ObservableList<evidenca> data = table.getItems();
+    public void initialize() throws SQLException {
+        log_name.setText("Prijavljeni ste kot:  " + user_saved.getUsername());
 
+
+// Set up the cell value factories to extract the values from the ObservableList of ObservableLists
+        id_single.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().get(0)));
+        game_single.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().get(1)));
+
+        id_team.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().get(0)));
+        game_team.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().get(1)));
+
+
+// Set the data source of the TableView to the returned ObservableList
+        table_single.setItems(JavaPostgreSql.getGames(false));
+        table_team.setItems(JavaPostgreSql.getGames(true));
     }
 
     @FXML
@@ -53,7 +69,7 @@ public class EvidencaViewWindow {
         Scene scene = new Scene(fxmlLoader.load());
         Stage stage = new Stage();
         stage.setResizable(false);
-        stage.setTitle("EVIDENCA ZDRAVNIŠKIH ORDINACIJ");
+        stage.setTitle("Lan Party");
         stage.setScene(scene);
         stage.show();
 
