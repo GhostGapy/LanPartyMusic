@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="389.0" prefWidth="593.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.music_projekt1.TournamentMenu">
+   <children>
+      <Label fx:id="game_name" alignment="CENTER" contentDisplay="CENTER" prefHeight="27.0" prefWidth="668.0" text="GAME NAME" textAlignment="CENTER">
+         <font>
+            <Font name="Bernard MT Condensed" size="25.0" />
+         </font>
+      </Label>
+      <TableView prefHeight="673.0" prefWidth="584.0">
+        <columns>
+          <TableColumn fx:id="id" prefWidth="75.0" text="ID" />
+          <TableColumn fx:id="name" prefWidth="337.0" text="TOURNAMENT NAME" />
+            <TableColumn fx:id="num_teams" prefWidth="160.0" text="NUMBER OF TEAMS" />
+        </columns>
+         <VBox.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </VBox.margin>
+      </TableView>
+      <HBox alignment="CENTER_RIGHT" prefHeight="41.0" prefWidth="584.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#game_enter" prefHeight="25.0" prefWidth="73.0" text="OPEN">
+               <HBox.margin>
+                  <Insets right="10.0" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="return_btn" onAction="#cancel" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="28.0" prefWidth="72.0" text="BACK">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin></Button>
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <VBox.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" />
+         </VBox.margin></HBox>
+   </children>
+</VBox>

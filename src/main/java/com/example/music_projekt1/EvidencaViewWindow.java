@@ -23,21 +23,18 @@ public class EvidencaViewWindow {
     @FXML
     public Label test;
     @FXML
-    public TableView<ObservableList<String>> table_single;
+    public TableView<ObservableList<String>> table;
     @FXML
-    public TableColumn<ObservableList<String>, String> id_single;
+    public TableColumn<ObservableList<String>, String> id;
     @FXML
-    public TableColumn<ObservableList<String>, String> game_single;
-
+    public TableColumn<ObservableList<String>, String> game;
     @FXML
-    public TableView<ObservableList<String>> table_team;
-    @FXML
-    public TableColumn<ObservableList<String>, String> id_team;
-    @FXML
-    public TableColumn<ObservableList<String>, String> game_team;
+    public TableColumn<ObservableList<String>, String> team_size;
 
     @FXML
     public Button btn_logout;
+    @FXML
+    public Button enter_btn;
 
 
 
@@ -46,16 +43,14 @@ public class EvidencaViewWindow {
 
 
 // Set up the cell value factories to extract the values from the ObservableList of ObservableLists
-        id_single.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().get(0)));
-        game_single.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().get(1)));
+        id.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().get(0)));
+        game.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().get(1)));
+        team_size.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().get(2)));
 
-        id_team.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().get(0)));
-        game_team.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().get(1)));
 
 
 // Set the data source of the TableView to the returned ObservableList
-        table_single.setItems(JavaPostgreSql.getGames(false));
-        table_team.setItems(JavaPostgreSql.getGames(true));
+        table.setItems(JavaPostgreSql.getGames());
     }
 
     @FXML
@@ -72,6 +67,19 @@ public class EvidencaViewWindow {
         stage.setTitle("Lan Party");
         stage.setScene(scene);
         stage.show();
+    }
 
+    @FXML
+    protected void tournament_enter() throws IOException {
+        Stage currentStage = (Stage) btn_logout.getScene().getWindow();
+        currentStage.close();
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("tournamentMenu.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        Stage stage = new Stage();
+        stage.setResizable(false);
+        stage.setTitle("Lan Party");
+        stage.setScene(scene);
+        stage.show();
     }
 }
