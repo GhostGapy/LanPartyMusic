@@ -6,10 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
@@ -39,7 +36,7 @@ public class EvidencaViewWindow {
 
 
     public void initialize() throws SQLException {
-        log_name.setText("Prijavljeni ste kot:  " + user_saved.getUsername());
+        log_name.setText("Prijavljeni ste kot:  " + saved.getUsername());
 
 
 // Set up the cell value factories to extract the values from the ObservableList of ObservableLists
@@ -47,15 +44,35 @@ public class EvidencaViewWindow {
         game.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().get(1)));
         team_size.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().get(2)));
 
-
-
 // Set the data source of the TableView to the returned ObservableList
         table.setItems(JavaPostgreSql.getGames());
+
+        table.setRowFactory( tv -> {
+            TableRow<ObservableList<String>> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
+                    ObservableList<String> rowData = row.getItem();
+
+                    String game_name = rowData.get(1);
+                    saved.setGameChosen(game_name);
+
+                    Integer GameID = Integer.parseInt(rowData.get(0));
+                    saved.setGameIDChosen(GameID);
+                    try {
+                        tournament_enter();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            });
+            return row;
+        });
     }
 
     @FXML
     protected void cancel() throws IOException {
-        user_saved.setUsername("");
+        saved.setUsername("");
+        saved.setGameIDChosen(null);
 
         Stage currentStage = (Stage) btn_logout.getScene().getWindow();
         currentStage.close();
@@ -70,7 +87,7 @@ public class EvidencaViewWindow {
     }
 
     @FXML
-    protected void tournament_enter() throws IOException {
+    public void tournament_enter() throws IOException {
         Stage currentStage = (Stage) btn_logout.getScene().getWindow();
         currentStage.close();
 
@@ -82,4 +99,6 @@ public class EvidencaViewWindow {
         stage.setScene(scene);
         stage.show();
     }
+
+
 }

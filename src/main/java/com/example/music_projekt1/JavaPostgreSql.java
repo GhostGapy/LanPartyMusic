@@ -179,5 +179,27 @@ public class JavaPostgreSql {
         return data;
     }
 
+
+    public static ObservableList<ObservableList<String>> getTournaments(Integer g_id) throws SQLException {
+        String url = "jdbc:postgresql://rogue.db.elephantsql.com/demvidab";
+        String user = "demvidab";
+        String password = "ve4aywwgYviI10jTDn92Q8ABSZBcHtoO";
+        ObservableList<ObservableList<String>> data = FXCollections.observableArrayList();
+
+        String query = "SELECT id, name, num_teams FROM tournaments WHERE game_id = " + g_id + ";";
+        try (Connection con = DriverManager.getConnection(url, user, password);
+             PreparedStatement pst = con.prepareStatement(query);
+             ResultSet rs = pst.executeQuery()) {
+            while (rs.next()) {
+                String name = rs.getString("name");
+                String id = rs.getString("id");
+                String num_teams = rs.getString("num_teams");
+                ObservableList<String> row = FXCollections.observableArrayList(id, name, num_teams);
+                data.add(row);
+            }
+        }
+        return data;
+    }
+
 }
 

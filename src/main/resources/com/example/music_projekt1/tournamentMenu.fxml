@@ -5,14 +5,14 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="389.0" prefWidth="593.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.music_projekt1.TournamentMenu">
+<VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="521.0" prefWidth="592.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.music_projekt1.TournamentMenu">
    <children>
       <Label fx:id="game_name" alignment="CENTER" contentDisplay="CENTER" prefHeight="27.0" prefWidth="668.0" text="GAME NAME" textAlignment="CENTER">
          <font>
             <Font name="Bernard MT Condensed" size="25.0" />
          </font>
       </Label>
-      <TableView prefHeight="673.0" prefWidth="584.0">
+      <TableView prefHeight="434.0" prefWidth="648.0" fx:id="table">
         <columns>
           <TableColumn fx:id="id" prefWidth="75.0" text="ID" />
           <TableColumn fx:id="name" prefWidth="337.0" text="TOURNAMENT NAME" />
@@ -29,7 +29,7 @@
                   <Insets right="10.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="return_btn" onAction="#cancel" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="28.0" prefWidth="72.0" text="BACK">
+            <Button fx:id="return_btn" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#cancel" prefHeight="28.0" prefWidth="72.0" text="BACK">
                <HBox.margin>
                   <Insets />
                </HBox.margin></Button>
