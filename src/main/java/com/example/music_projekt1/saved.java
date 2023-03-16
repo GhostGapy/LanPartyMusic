@@ -6,6 +6,8 @@ public class saved {
     private static Integer gameIDChosen;
     private static String tournament;
     private static Integer tournamentID;
+    private static String teamName;
+    private static Integer teamID;
 
     public static String getUsername() {
         return username;
@@ -41,6 +43,20 @@ public class saved {
     }
     public static void setTournamentID(Integer _tournamentIDChosen) {
         tournamentID = _tournamentIDChosen;
+    }
+
+    public static String getTeam() {
+        return teamName;
+    }
+    public static void setTeam (String _teamName) {
+        teamName = _teamName;
+    }
+
+    public static Integer getTeamID () {
+        return teamID;
+    }
+    public static void setTeamID(Integer _teamID) {
+        teamID = _teamID;
     }
 
 

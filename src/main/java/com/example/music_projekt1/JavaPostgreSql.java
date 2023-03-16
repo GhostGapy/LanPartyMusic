@@ -6,7 +6,6 @@ import javafx.scene.control.Alert;
 
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -128,34 +127,7 @@ public class JavaPostgreSql {
 
     }
 
-    public static String[] getDatabase() throws SQLException {
-        String url = "jdbc:postgresql://ep-purple-breeze-177741.eu-central-1.aws.neon.tech/neondb";
-        String user = "GhostGapy";
-        String password = "G4XZhDPTB0WC";
 
-        String username = "";
-
-        String query = "SELECT username FROM users WHERE username = ?";
-
-        try (Connection con = DriverManager.getConnection(url, user, password);
-             PreparedStatement pst = con.prepareStatement(query)) {
-
-            pst.setString(1, username);
-
-        } catch (SQLException ex) {
-
-            Logger lgr = Logger.getLogger(JavaPostgreSql.class.getName());
-            lgr.log(Level.SEVERE, ex.getMessage(), ex);
-
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("ERROR");
-            alert.setHeaderText("There was an error");
-            alert.setContentText("Please try again");
-            alert.showAndWait();
-        }
-
-        return new String[0];
-    }
 
     public static ObservableList<ObservableList<String>> getGames() throws SQLException {
         String url = "jdbc:postgresql://rogue.db.elephantsql.com/demvidab";
@@ -201,5 +173,25 @@ public class JavaPostgreSql {
         return data;
     }
 
+    public static ObservableList<ObservableList<String>> getTeams(Integer t_id) throws SQLException{
+        String url = "jdbc:postgresql://rogue.db.elephantsql.com/demvidab";
+        String user = "demvidab";
+        String password = "ve4aywwgYviI10jTDn92Q8ABSZBcHtoO";
+        ObservableList<ObservableList<String>> data = FXCollections.observableArrayList();
+
+        String query = "SELECT id, name, num_players FROM teams WHERE tournament_id = " + t_id + ";";
+        try (Connection con = DriverManager.getConnection(url, user, password);
+             PreparedStatement pst = con.prepareStatement(query);
+             ResultSet rs = pst.executeQuery()) {
+            while (rs.next()) {
+                String name = rs.getString("name");
+                String id = rs.getString("id");
+                String num_players = rs.getString("num_players");
+                ObservableList<String> row = FXCollections.observableArrayList(id, name, num_players);
+                data.add(row);
+            }
+        }
+        return data;
+    }
 }
 

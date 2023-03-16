@@ -1,14 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.example.music_projekt1.TeamMenu"
-      prefHeight="400.0" prefWidth="600.0">
-
+<VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity"
+      minWidth="-Infinity" prefHeight="521.0" prefWidth="691.0" xmlns="http://javafx.com/javafx/17.0.2-ea"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.music_projekt1.TeamMenu">
+    <Label fx:id="tournament_name" alignment="CENTER" contentDisplay="CENTER" prefHeight="27.0" prefWidth="668.0"
+           text="TOURNAMENT NAME" textAlignment="CENTER">
+        <font>
+            <Font name="Bernard MT Condensed" size="25.0"/>
+        </font>
+    </Label>
+    <TableView fx:id="table" prefHeight="865.0" prefWidth="671.0">
+        <columns>
+            <TableColumn fx:id="id" prefWidth="75.0" text="ID"/>
+            <TableColumn fx:id="name" prefWidth="348.0" text="TEAM NAME"/>
+            <TableColumn fx:id="num_players" prefWidth="247.0" text="NUMBER OF PLAYERS ON TEAM"/>
+        </columns>
+        <VBox.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+        </VBox.margin>
+    </TableView>
+    <HBox alignment="CENTER_RIGHT" prefHeight="41.0" prefWidth="584.0">
+        <opaqueInsets>
+            <Insets/>
+        </opaqueInsets>
+        <VBox.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0"/>
+        </VBox.margin>
+        <Button fx:id="return_btn" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false"
+                onAction="#cancel" prefHeight="28.0" prefWidth="72.0" text="BACK">
+            <HBox.margin>
+                <Insets/>
+            </HBox.margin>
+        </Button>
+    </HBox>
 </VBox>
