@@ -29,6 +29,8 @@ public class LoginWindow {
             System.out.println("Login successful");
 
             saved.setUsername(username.getText());
+            Integer userID = JavaPostgreSql.getUserID(username.getText());
+            saved.setUserID(userID);
 
             Stage currentStage = (Stage) btn_cancel.getScene().getWindow();
             currentStage.close();

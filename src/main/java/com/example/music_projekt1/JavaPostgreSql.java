@@ -10,6 +10,37 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class JavaPostgreSql {
+
+    public static Integer getUserID(String _username) {
+        String url = "jdbc:postgresql://rogue.db.elephantsql.com/demvidab";
+        String user = "demvidab";
+        String password = "ve4aywwgYviI10jTDn92Q8ABSZBcHtoO";
+        Integer userID = null;
+
+        try {
+            Connection connection = DriverManager.getConnection(url, user, password);
+
+            String query = "SELECT id FROM users WHERE username = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, _username);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                userID = resultSet.getInt("id");
+            }
+
+            resultSet.close();
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return userID;
+    }
+
+
     public static void Register(String name, String surname, String userPassword1) throws NoSuchAlgorithmException {
         String url = "jdbc:postgresql://rogue.db.elephantsql.com/demvidab";
         String user = "demvidab";
@@ -192,6 +223,110 @@ public class JavaPostgreSql {
             }
         }
         return data;
+    }
+
+    public static ObservableList<String> getPlayers(Integer t_id) throws SQLException {
+        String url = "jdbc:postgresql://rogue.db.elephantsql.com/demvidab";
+        String user = "demvidab";
+        String password = "ve4aywwgYviI10jTDn92Q8ABSZBcHtoO";
+        ObservableList<String> data = FXCollections.observableArrayList();
+
+        String query = "SELECT name FROM players WHERE team_id = " + t_id + ";";
+        try (Connection con = DriverManager.getConnection(url, user, password);
+             PreparedStatement pst = con.prepareStatement(query);
+             ResultSet rs = pst.executeQuery()) {
+            while (rs.next()) {
+                String name = rs.getString("name");
+                data.add(name);
+            }
+        }
+        return data;
+    }
+
+    public static boolean checkPasswordTeam(String _password, Integer teamID, Integer userID) {
+        String url = "jdbc:postgresql://rogue.db.elephantsql.com/demvidab";
+        String user = "demvidab";
+        String password = "ve4aywwgYviI10jTDn92Q8ABSZBcHtoO";
+
+        String query = "SELECT team_pass FROM teams WHERE id = ?";
+
+        try (Connection con = DriverManager.getConnection(url, user, password);
+             PreparedStatement pst = con.prepareStatement(query)) {
+
+            pst.setInt(1, teamID);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                String correctPassword = rs.getString("team_pass");
+                String pass1 = PasswordHasher.hashPassword(_password);
+                if (pass1.equals(correctPassword)) {
+
+                    joinTeam(teamID, userID);
+                    return true;
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("ERROR");
+                    alert.setHeaderText("Passwords do not match");
+                    alert.setContentText("Please try again");
+                    alert.showAndWait();
+                    return false;
+                }
+            } else {
+                // No matching user was found
+                System.out.println("No matching team was found");
+
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("ERROR");
+                alert.setHeaderText("No matching team was found");
+                alert.setContentText("Please try again");
+                alert.showAndWait();
+                return false;
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return false;
+
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void joinTeam(Integer teamID, Integer userID) {
+        String url = "jdbc:postgresql://rogue.db.elephantsql.com/demvidab";
+        String user = "demvidab";
+        String password = "ve4aywwgYviI10jTDn92Q8ABSZBcHtoO";
+        String query = "INSERT INTO players (name, kraj_id, user_id, team_id) VALUES ((SELECT name FROM users WHERE id=?), 431, ?, ?)";
+
+        try (Connection conn = DriverManager.getConnection(url, user, password);
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setInt(1, userID);
+            stmt.setInt(2, userID);
+            stmt.setInt(3, teamID);
+
+            int affectedRows = stmt.executeUpdate();
+
+            if (affectedRows == 1) {
+                Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                successAlert.setTitle("Success");
+                successAlert.setHeaderText(null);
+                successAlert.setContentText("Player joined successfully!");
+                successAlert.showAndWait();
+            } else {
+                Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                errorAlert.setTitle("Error");
+                errorAlert.setHeaderText(null);
+                errorAlert.setContentText("Failed to add player to the database.");
+                errorAlert.showAndWait();
+            }
+
+        } catch (SQLException ex) {
+            Alert exceptionAlert = new Alert(Alert.AlertType.ERROR);
+            exceptionAlert.setTitle("Exception");
+            exceptionAlert.setHeaderText(null);
+            exceptionAlert.setContentText("An exception occurred while accessing the database: " + ex.getMessage());
+            exceptionAlert.showAndWait();
+        }
     }
 }
 

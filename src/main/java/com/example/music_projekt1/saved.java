@@ -2,6 +2,7 @@ package com.example.music_projekt1;
 
 public class saved {
     private static String username;
+    private static Integer userID;
     private static String gameChosen;
     private static Integer gameIDChosen;
     private static String tournament;
@@ -16,6 +17,12 @@ public class saved {
         username = username1;
     }
 
+    public static Integer getUserID() {
+        return userID;
+    }
+    public static void setUserID(Integer userID1) {
+        userID = userID1;
+    }
 
     public static String getGameChosen() {
         return gameChosen;
