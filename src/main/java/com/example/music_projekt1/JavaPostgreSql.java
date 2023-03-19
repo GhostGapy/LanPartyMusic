@@ -248,46 +248,55 @@ public class JavaPostgreSql {
         String user = "demvidab";
         String password = "ve4aywwgYviI10jTDn92Q8ABSZBcHtoO";
 
-        String query = "SELECT team_pass FROM teams WHERE id = ?";
+        if (checkUserTeam(userID)) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setHeaderText("You are already in a team");
+            alert.setContentText("Please try again");
+            alert.showAndWait();
+            return false;
+        } else {
+            String query = "SELECT team_pass FROM teams WHERE id = ?";
 
-        try (Connection con = DriverManager.getConnection(url, user, password);
-             PreparedStatement pst = con.prepareStatement(query)) {
+            try (Connection con = DriverManager.getConnection(url, user, password);
+                 PreparedStatement pst = con.prepareStatement(query)) {
 
-            pst.setInt(1, teamID);
-            ResultSet rs = pst.executeQuery();
+                pst.setInt(1, teamID);
+                ResultSet rs = pst.executeQuery();
 
-            if (rs.next()) {
-                String correctPassword = rs.getString("team_pass");
-                String pass1 = PasswordHasher.hashPassword(_password);
-                if (pass1.equals(correctPassword)) {
-
-                    joinTeam(teamID, userID);
-                    return true;
+                if (rs.next()) {
+                    String correctPassword = rs.getString("team_pass");
+                    String pass1 = PasswordHasher.hashPassword(_password);
+                    System.out.println(pass1 + "  " + correctPassword);
+                    if (pass1.equals(correctPassword)) {
+                        joinTeam(teamID, userID);
+                        return true;
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("ERROR");
+                        alert.setHeaderText("Passwords do not match");
+                        alert.setContentText("Please try again");
+                        alert.showAndWait();
+                        return false;
+                    }
                 } else {
+                    // No matching user was found
+                    System.out.println("No matching team was found");
+
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("ERROR");
-                    alert.setHeaderText("Passwords do not match");
+                    alert.setHeaderText("No matching team was found");
                     alert.setContentText("Please try again");
                     alert.showAndWait();
                     return false;
                 }
-            } else {
-                // No matching user was found
-                System.out.println("No matching team was found");
-
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("ERROR");
-                alert.setHeaderText("No matching team was found");
-                alert.setContentText("Please try again");
-                alert.showAndWait();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
                 return false;
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            return false;
 
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
+            } catch (NoSuchAlgorithmException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -295,37 +304,57 @@ public class JavaPostgreSql {
         String url = "jdbc:postgresql://rogue.db.elephantsql.com/demvidab";
         String user = "demvidab";
         String password = "ve4aywwgYviI10jTDn92Q8ABSZBcHtoO";
-        String query = "INSERT INTO players (name, kraj_id, user_id, team_id) VALUES ((SELECT name FROM users WHERE id=?), 431, ?, ?)";
 
-        try (Connection conn = DriverManager.getConnection(url, user, password);
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+            String query = "INSERT INTO players (name, kraj_id, user_id, team_id) VALUES ((SELECT username FROM users WHERE id=?), 431, ?, ?)";
 
-            stmt.setInt(1, userID);
-            stmt.setInt(2, userID);
-            stmt.setInt(3, teamID);
+            try (Connection conn = DriverManager.getConnection(url, user, password);
+                 PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            int affectedRows = stmt.executeUpdate();
+                stmt.setInt(1, userID);
+                stmt.setInt(2, userID);
+                stmt.setInt(3, teamID);
 
-            if (affectedRows == 1) {
-                Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-                successAlert.setTitle("Success");
-                successAlert.setHeaderText(null);
-                successAlert.setContentText("Player joined successfully!");
-                successAlert.showAndWait();
-            } else {
-                Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-                errorAlert.setTitle("Error");
-                errorAlert.setHeaderText(null);
-                errorAlert.setContentText("Failed to add player to the database.");
-                errorAlert.showAndWait();
+                int affectedRows = stmt.executeUpdate();
+
+                if (affectedRows == 1) {
+                    Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                    successAlert.setTitle("Success");
+                    successAlert.setHeaderText(null);
+                    successAlert.setContentText("Player joined successfully!");
+                    successAlert.showAndWait();
+                } else {
+                    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                    errorAlert.setTitle("Error");
+                    errorAlert.setHeaderText(null);
+                    errorAlert.setContentText("Failed to add player to the database.");
+                    errorAlert.showAndWait();
+                }
+
+            } catch (SQLException ex) {
+                Alert exceptionAlert = new Alert(Alert.AlertType.ERROR);
+                exceptionAlert.setTitle("Exception");
+                exceptionAlert.setHeaderText(null);
+                exceptionAlert.setContentText("An exception occurred while accessing the database: " + ex.getMessage());
+                exceptionAlert.showAndWait();
             }
+        }
 
-        } catch (SQLException ex) {
-            Alert exceptionAlert = new Alert(Alert.AlertType.ERROR);
-            exceptionAlert.setTitle("Exception");
-            exceptionAlert.setHeaderText(null);
-            exceptionAlert.setContentText("An exception occurred while accessing the database: " + ex.getMessage());
-            exceptionAlert.showAndWait();
+    public static boolean checkUserTeam(Integer userID){
+        String url = "jdbc:postgresql://rogue.db.elephantsql.com/demvidab";
+        String user = "demvidab";
+        String password = "ve4aywwgYviI10jTDn92Q8ABSZBcHtoO";
+
+        try (Connection conn = DriverManager.getConnection(url, user, password)) {
+            String sql = "SELECT COUNT(*) FROM players WHERE user_id = ?";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, userID);
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+            int count = rs.getInt(1);
+            return count > 0;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
         }
     }
 }
