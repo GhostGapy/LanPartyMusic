@@ -24,6 +24,10 @@ public class TeamMenu {
     public TableColumn<ObservableList<String>, String> num_players;
     @FXML
     public Button return_btn;
+    @FXML
+    public Button leaveTeam;
+    @FXML
+    public Button createTeam_btn;
 
     public void initialize() throws SQLException{
 
@@ -56,6 +60,17 @@ public class TeamMenu {
                 });
                 return row;
             });
+
+        saved.setPlayerID(JavaPostgreSql.getPlayerID(saved.getUserID()));
+
+        if (saved.getPlayerID() == null) {
+            leaveTeam.setVisible(false);
+            createTeam_btn.setVisible(true);
+        }
+        else {
+            leaveTeam.setVisible(true);
+            createTeam_btn.setVisible(false);
+        }
     }
 
     @FXML
@@ -84,6 +99,31 @@ public class TeamMenu {
         Stage stage = new Stage();
         stage.setResizable(false);
         stage.setTitle("Lan Party");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    @FXML
+    protected void teamLeave(){
+        JavaPostgreSql.LeaveTeam(saved.getPlayerID());
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Leave team");
+        alert.setHeaderText(null);
+        alert.setContentText("Successfully left the team!");
+        alert.showAndWait();
+        leaveTeam.setVisible(false);
+    }
+
+    @FXML
+    protected void createTeam() throws IOException {
+        Stage currentStage = (Stage) createTeam_btn.getScene().getWindow();
+        currentStage.close();
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("createTeam.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        Stage stage = new Stage();
+        stage.setResizable(true);
+        stage.setTitle("Create Team");
         stage.setScene(scene);
         stage.show();
     }
