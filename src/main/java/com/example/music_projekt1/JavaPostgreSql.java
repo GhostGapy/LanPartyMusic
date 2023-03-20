@@ -357,5 +357,42 @@ public class JavaPostgreSql {
             return false;
         }
     }
+
+    public static void LeaveTeam(Integer PlayerID){
+        String url = "jdbc:postgresql://rogue.db.elephantsql.com/demvidab";
+        String user = "demvidab";
+        String password = "ve4aywwgYviI10jTDn92Q8ABSZBcHtoO";
+
+        try (Connection conn = DriverManager.getConnection(url, user, password)) {
+            String sql = "SELECT leaveTeamFun(?)";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, PlayerID);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static Integer getPlayerID(Integer userID){
+        String url = "jdbc:postgresql://rogue.db.elephantsql.com/demvidab";
+        String user = "demvidab";
+        String password = "ve4aywwgYviI10jTDn92Q8ABSZBcHtoO";
+
+        if(checkUserTeam(userID)){
+            try (Connection conn = DriverManager.getConnection(url, user, password)) {
+                String sql = "SELECT id FROM players WHERE user_id = ?";
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+                pstmt.setInt(1, userID);
+                ResultSet rs = pstmt.executeQuery();
+                rs.next();
+                return rs.getInt(1);
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
 }
 

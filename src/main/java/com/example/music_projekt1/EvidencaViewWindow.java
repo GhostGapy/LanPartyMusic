@@ -25,6 +25,8 @@ public class EvidencaViewWindow {
     public TableColumn<ObservableList<String>, String> team_size;
     @FXML
     public Button btn_logout;
+    @FXML
+    public Button leaveTeam;
 
 
 
@@ -60,6 +62,12 @@ public class EvidencaViewWindow {
             });
             return row;
         });
+
+        saved.setPlayerID(JavaPostgreSql.getPlayerID(saved.getUserID()));
+
+        if (saved.getPlayerID() == null) {
+            leaveTeam.setVisible(false);
+        }
     }
 
     @FXML
@@ -93,5 +101,16 @@ public class EvidencaViewWindow {
         stage.show();
     }
 
+
+    @FXML
+    protected void teamLeave(){
+        JavaPostgreSql.LeaveTeam(saved.getPlayerID());
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Leave team");
+        alert.setHeaderText(null);
+        alert.setContentText("Successfully left the team!");
+        alert.showAndWait();
+        leaveTeam.setVisible(false);
+    }
 
 }
