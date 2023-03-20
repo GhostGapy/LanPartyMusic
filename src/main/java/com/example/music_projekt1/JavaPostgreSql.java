@@ -394,5 +394,28 @@ public class JavaPostgreSql {
             return null;
         }
     }
+
+    public static void createTeam(String teamName, String password, Integer tournamentID) {
+        String url = "jdbc:postgresql://rogue.db.elephantsql.com/demvidab";
+        String user = "demvidab";
+        String _password = "ve4aywwgYviI10jTDn92Q8ABSZBcHtoO";
+        Integer teamId = null;
+
+        try (Connection conn = DriverManager.getConnection(url, user, _password)) {
+            String sql = "SELECT createTeam(?, ?, ?)";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, teamName);
+            pstmt.setString(2, password);
+            pstmt.setInt(3, tournamentID);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                teamId = rs.getInt(1);
+                saved.setTeamID(teamId);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
 }
 

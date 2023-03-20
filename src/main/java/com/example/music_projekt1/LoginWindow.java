@@ -38,7 +38,7 @@ public class LoginWindow {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("evidencaViewWindow.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
             Stage stage = new Stage();
-            stage.setResizable(false);
+            stage.setResizable(true);
             stage.setTitle("LAN PARTY");
             stage.setScene(scene);
             stage.show();

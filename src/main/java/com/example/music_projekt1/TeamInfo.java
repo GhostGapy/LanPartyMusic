@@ -53,7 +53,7 @@ public class TeamInfo {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("teamMenu.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         Stage stage = new Stage();
-        stage.setResizable(false);
+        stage.setResizable(true);
         stage.setTitle("Lan Party");
         stage.setScene(scene);
         stage.show();
