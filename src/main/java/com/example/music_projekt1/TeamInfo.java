@@ -5,18 +5,27 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.PasswordField;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
+import java.awt.*;
 
 public class TeamInfo {
-
+    @FXML
+    public BufferedImage bImage2;
+    public File file;
     @FXML
     public Label tournament_name;
     @FXML
@@ -29,6 +38,9 @@ public class TeamInfo {
     public Button join_btn;
     @FXML
     public Button back_btn;
+
+    @FXML
+    public Button editimg_btn;
 
     public void initialize() throws SQLException {
         System.out.println(saved.getTeamID());
@@ -59,6 +71,71 @@ public class TeamInfo {
         stage.show();
     }
 
+    @FXML
+    protected void editimg() throws SQLException, IOException {
+        FileChooser fileChooser = new FileChooser();
+
+// set the title of the file chooser dialog
+        fileChooser.setTitle("Open Image File");
+
+// set the initial directory of the file chooser
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+
+// set the file extension filter to limit the selectable files to images
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Image files (*.jpg, *.jpeg, *.png)", "*.jpg", "*.jpeg", "*.png");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+// get the selected file from the file chooser dialog
+        file = fileChooser.showOpenDialog(new Stage());
+        String sql = "UPDATE teams SET image = ? WHERE id = ?";
+        String url = "jdbc:postgresql://rogue.db.elephantsql.com/demvidab";
+        String user = "demvidab";
+        String password = "ve4aywwgYviI10jTDn92Q8ABSZBcHtoO";
+        Connection conn = DriverManager.getConnection(url, user, password);
+        PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        System.out.print("Success");
+        FileInputStream fin = new FileInputStream(file);
+
+            preparedStatement.setBinaryStream(1, fin, (int) file.length());
+            preparedStatement.setInt(2,saved.getTeamID());
+        System.out.print("Success");
+            preparedStatement.executeUpdate();
+        System.out.print("Success");
+            setImage();
+
+        conn.close();
+        System.out.print("Success");
+
+    }
+    private void setImage() throws SQLException, IOException {
+        String sql="SELECT image, LENGTH(image) FROM teams WHERE id = ?";
+        String url = "jdbc:postgresql://rogue.db.elephantsql.com/demvidab";
+        String user = "demvidab";
+        String password = "ve4aywwgYviI10jTDn92Q8ABSZBcHtoO";
+        Connection conn = DriverManager.getConnection(url, user, password);
+        PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        preparedStatement.setInt(1, saved.getTeamID());
+        ResultSet rs = preparedStatement.executeQuery();
+        if (rs.next())
+        {
+            int len = rs.getInt(2);
+            byte[] buf = rs.getBytes("image");
+            if (buf != null) {
+                ByteArrayInputStream bis = new ByteArrayInputStream(buf);
+                bImage2 = ImageIO.read(bis);
+                bImage2 = resizeImage(bImage2, 100, 100);
+            }
+            conn.close();
+            System.out.println("Succenss!");
+        }
+    }
+    public BufferedImage resizeImage(BufferedImage originalImage, int targetWidth, int targetHeight) throws IOException {
+        BufferedImage resizedImage = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_RGB);
+        Graphics2D graphics2D = resizedImage.createGraphics();
+        graphics2D.drawImage(originalImage, 0, 0, targetWidth, targetHeight, null);
+        graphics2D.dispose();
+        return resizedImage;
+    }
     @FXML
     protected void join() throws IOException, NoSuchAlgorithmException {
         String _password = pass.getText();

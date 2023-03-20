@@ -7,6 +7,7 @@ module com.example.music_projekt1 {
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
     requires java.sql;
+    requires java.desktop;
 
     opens com.example.music_projekt1 to javafx.fxml;
     exports com.example.music_projekt1;

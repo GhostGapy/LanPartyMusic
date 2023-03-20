@@ -78,7 +78,7 @@ public class JavaPostgreSql {
         }
     }
 
-    public static boolean freeName(String name, String surname){
+    public static boolean freeName(String name, String surname) {
         String url = "jdbc:postgresql://rogue.db.elephantsql.com/demvidab";
         String user = "demvidab";
         String password = "ve4aywwgYviI10jTDn92Q8ABSZBcHtoO";
@@ -159,7 +159,6 @@ public class JavaPostgreSql {
     }
 
 
-
     public static ObservableList<ObservableList<String>> getGames() throws SQLException {
         String url = "jdbc:postgresql://rogue.db.elephantsql.com/demvidab";
         String user = "demvidab";
@@ -204,7 +203,7 @@ public class JavaPostgreSql {
         return data;
     }
 
-    public static ObservableList<ObservableList<String>> getTeams(Integer t_id) throws SQLException{
+    public static ObservableList<ObservableList<String>> getTeams(Integer t_id) throws SQLException {
         String url = "jdbc:postgresql://rogue.db.elephantsql.com/demvidab";
         String user = "demvidab";
         String password = "ve4aywwgYviI10jTDn92Q8ABSZBcHtoO";
@@ -305,41 +304,41 @@ public class JavaPostgreSql {
         String user = "demvidab";
         String password = "ve4aywwgYviI10jTDn92Q8ABSZBcHtoO";
 
-            String query = "INSERT INTO players (name, kraj_id, user_id, team_id) VALUES ((SELECT username FROM users WHERE id=?), 431, ?, ?)";
+        String query = "INSERT INTO players (name, kraj_id, user_id, team_id) VALUES ((SELECT username FROM users WHERE id=?), 431, ?, ?)";
 
-            try (Connection conn = DriverManager.getConnection(url, user, password);
-                 PreparedStatement stmt = conn.prepareStatement(query)) {
+        try (Connection conn = DriverManager.getConnection(url, user, password);
+             PreparedStatement stmt = conn.prepareStatement(query)) {
 
-                stmt.setInt(1, userID);
-                stmt.setInt(2, userID);
-                stmt.setInt(3, teamID);
+            stmt.setInt(1, userID);
+            stmt.setInt(2, userID);
+            stmt.setInt(3, teamID);
 
-                int affectedRows = stmt.executeUpdate();
+            int affectedRows = stmt.executeUpdate();
 
-                if (affectedRows == 1) {
-                    Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-                    successAlert.setTitle("Success");
-                    successAlert.setHeaderText(null);
-                    successAlert.setContentText("Player joined successfully!");
-                    successAlert.showAndWait();
-                } else {
-                    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-                    errorAlert.setTitle("Error");
-                    errorAlert.setHeaderText(null);
-                    errorAlert.setContentText("Failed to add player to the database.");
-                    errorAlert.showAndWait();
-                }
-
-            } catch (SQLException ex) {
-                Alert exceptionAlert = new Alert(Alert.AlertType.ERROR);
-                exceptionAlert.setTitle("Exception");
-                exceptionAlert.setHeaderText(null);
-                exceptionAlert.setContentText("An exception occurred while accessing the database: " + ex.getMessage());
-                exceptionAlert.showAndWait();
+            if (affectedRows == 1) {
+                Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                successAlert.setTitle("Success");
+                successAlert.setHeaderText(null);
+                successAlert.setContentText("Player joined successfully!");
+                successAlert.showAndWait();
+            } else {
+                Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                errorAlert.setTitle("Error");
+                errorAlert.setHeaderText(null);
+                errorAlert.setContentText("Failed to add player to the database.");
+                errorAlert.showAndWait();
             }
-        }
 
-    public static boolean checkUserTeam(Integer userID){
+        } catch (SQLException ex) {
+            Alert exceptionAlert = new Alert(Alert.AlertType.ERROR);
+            exceptionAlert.setTitle("Exception");
+            exceptionAlert.setHeaderText(null);
+            exceptionAlert.setContentText("An exception occurred while accessing the database: " + ex.getMessage());
+            exceptionAlert.showAndWait();
+        }
+    }
+
+    public static boolean checkUserTeam(Integer userID) {
         String url = "jdbc:postgresql://rogue.db.elephantsql.com/demvidab";
         String user = "demvidab";
         String password = "ve4aywwgYviI10jTDn92Q8ABSZBcHtoO";
@@ -358,7 +357,7 @@ public class JavaPostgreSql {
         }
     }
 
-    public static void LeaveTeam(Integer PlayerID){
+    public static void LeaveTeam(Integer PlayerID) {
         String url = "jdbc:postgresql://rogue.db.elephantsql.com/demvidab";
         String user = "demvidab";
         String password = "ve4aywwgYviI10jTDn92Q8ABSZBcHtoO";
@@ -373,12 +372,12 @@ public class JavaPostgreSql {
         }
     }
 
-    public static Integer getPlayerID(Integer userID){
+    public static Integer getPlayerID(Integer userID) {
         String url = "jdbc:postgresql://rogue.db.elephantsql.com/demvidab";
         String user = "demvidab";
         String password = "ve4aywwgYviI10jTDn92Q8ABSZBcHtoO";
 
-        if(checkUserTeam(userID)){
+        if (checkUserTeam(userID)) {
             try (Connection conn = DriverManager.getConnection(url, user, password)) {
                 String sql = "SELECT id FROM players WHERE user_id = ?";
                 PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -393,6 +392,7 @@ public class JavaPostgreSql {
         } else {
             return null;
         }
+
     }
 }
 
