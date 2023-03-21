@@ -297,6 +297,7 @@ public class JavaPostgreSql {
         }
     }
 
+
     public static void joinTeam(Integer teamID, Integer userID) {
         String url = "jdbc:postgresql://rogue.db.elephantsql.com/demvidab";
         String user = "demvidab";
