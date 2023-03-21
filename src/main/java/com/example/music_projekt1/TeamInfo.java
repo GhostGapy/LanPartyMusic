@@ -5,20 +5,34 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.PasswordField;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
+import javafx.scene.image.Image;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
+import java.awt.*;
 
 public class TeamInfo {
-
+    @FXML
+    public BufferedImage bImage2 = new BufferedImage(1000,1000,BufferedImage.TYPE_INT_RGB);
+    public File file;
     @FXML
     public Label tournament_name;
+    @FXML
+    public ImageView teamimg;
     @FXML
     public Label g_t_label;
     @FXML
@@ -30,7 +44,10 @@ public class TeamInfo {
     @FXML
     public Button back_btn;
 
-    public void initialize() throws SQLException {
+    @FXML
+    public Button editimg_btn;
+
+    public void initialize() throws SQLException, IOException {
         System.out.println(saved.getTeamID());
         System.out.println(saved.getTeam());
 
@@ -40,6 +57,7 @@ public class TeamInfo {
         Integer teamID = saved.getTeamID();
         ObservableList<String> players = JavaPostgreSql.getPlayers(teamID);
         listViewPlayers.getItems().addAll(players);
+        setImage();
     }
 
     @FXML
@@ -59,6 +77,86 @@ public class TeamInfo {
         stage.show();
     }
 
+    @FXML
+    protected void editimg() throws SQLException, IOException {
+        FileChooser fileChooser = new FileChooser();
+
+// set the title of the file chooser dialog
+        fileChooser.setTitle("Open Image File");
+
+// set the initial directory of the file chooser
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+
+// set the file extension filter to limit the selectable files to images
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Image files (*.jpg, *.jpeg, *.png)", "*.jpg", "*.jpeg", "*.png");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+// get the selected file from the file chooser dialog
+        file = fileChooser.showOpenDialog(new Stage());
+        String sql = "UPDATE teams SET image = ? WHERE id = ?";
+        String url = "jdbc:postgresql://rogue.db.elephantsql.com/demvidab";
+        String user = "demvidab";
+        String password = "ve4aywwgYviI10jTDn92Q8ABSZBcHtoO";
+        Connection conn = DriverManager.getConnection(url, user, password);
+        PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        System.out.print("Success");
+        FileInputStream fin = new FileInputStream(file);
+
+        preparedStatement.setBinaryStream(1, fin, (int) file.length());
+        preparedStatement.setInt(2,saved.getTeamID());
+        System.out.print("Success");
+        preparedStatement.executeUpdate();
+        System.out.print("Success");
+        setImage();
+
+        conn.close();
+        System.out.print("Success");
+
+    }
+    private void setImage() throws SQLException, IOException {
+        String sql="SELECT image, LENGTH(image) FROM teams WHERE id = ?";
+        String url = "jdbc:postgresql://rogue.db.elephantsql.com/demvidab";
+        String user = "demvidab";
+        String password = "ve4aywwgYviI10jTDn92Q8ABSZBcHtoO";
+        Connection conn = DriverManager.getConnection(url, user, password);
+        PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        preparedStatement.setInt(1, saved.getTeamID());
+        ResultSet rs = preparedStatement.executeQuery();
+        if (rs.next())
+        {
+            int len = rs.getInt(2);
+            byte[] buf = rs.getBytes("image");
+            if (buf != null) {
+                ByteArrayInputStream bis = new ByteArrayInputStream(buf);
+                bImage2 = ImageIO.read(bis);
+                bImage2 = resizeImage(bImage2, 300, 300);
+            }
+            Image image = convertToFxImage(bImage2);
+            teamimg.setImage(image);
+            conn.close();
+            System.out.println("Succenss!");
+        }
+    }
+    public BufferedImage resizeImage(BufferedImage originalImage, int targetWidth, int targetHeight) throws IOException {
+        BufferedImage resizedImage = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_RGB);
+        Graphics2D graphics2D = resizedImage.createGraphics();
+        graphics2D.drawImage(originalImage, 0, 0, targetWidth, targetHeight, null);
+        graphics2D.dispose();
+        return resizedImage;
+    }
+    private static Image convertToFxImage(BufferedImage image) {
+        WritableImage wr = null;
+        if (image != null) {
+            wr = new WritableImage(image.getWidth(), image.getHeight());
+            PixelWriter pw = wr.getPixelWriter();
+            for (int x = 0; x < image.getWidth(); x++) {
+                for (int y = 0; y < image.getHeight(); y++) {
+                    pw.setArgb(x, y, image.getRGB(x, y));
+                }
+            }
+        }
+        return new ImageView(wr).getImage();
+    }
     @FXML
     protected void join() throws IOException, NoSuchAlgorithmException {
         String _password = pass.getText();
@@ -89,5 +187,3 @@ public class TeamInfo {
     }
 
 }
-
-
