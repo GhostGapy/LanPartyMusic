@@ -44,9 +44,6 @@ public class TeamInfo {
     @FXML
     public Button back_btn;
 
-    @FXML
-    public Button editimg_btn;
-
     public void initialize() throws SQLException, IOException {
         System.out.println(saved.getTeamID());
         System.out.println(saved.getTeam());
@@ -77,42 +74,6 @@ public class TeamInfo {
         stage.show();
     }
 
-    @FXML
-    protected void editimg() throws SQLException, IOException {
-        FileChooser fileChooser = new FileChooser();
-
-// set the title of the file chooser dialog
-        fileChooser.setTitle("Open Image File");
-
-// set the initial directory of the file chooser
-        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-
-// set the file extension filter to limit the selectable files to images
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Image files (*.jpg, *.jpeg, *.png)", "*.jpg", "*.jpeg", "*.png");
-        fileChooser.getExtensionFilters().add(extFilter);
-
-// get the selected file from the file chooser dialog
-        file = fileChooser.showOpenDialog(new Stage());
-        String sql = "UPDATE teams SET image = ? WHERE id = ?";
-        String url = "jdbc:postgresql://rogue.db.elephantsql.com/demvidab";
-        String user = "demvidab";
-        String password = "ve4aywwgYviI10jTDn92Q8ABSZBcHtoO";
-        Connection conn = DriverManager.getConnection(url, user, password);
-        PreparedStatement preparedStatement = conn.prepareStatement(sql);
-        System.out.print("Success");
-        FileInputStream fin = new FileInputStream(file);
-
-        preparedStatement.setBinaryStream(1, fin, (int) file.length());
-        preparedStatement.setInt(2,saved.getTeamID());
-        System.out.print("Success");
-        preparedStatement.executeUpdate();
-        System.out.print("Success");
-        setImage();
-
-        conn.close();
-        System.out.print("Success");
-
-    }
     private void setImage() throws SQLException, IOException {
         String sql="SELECT image, LENGTH(image) FROM teams WHERE id = ?";
         String url = "jdbc:postgresql://rogue.db.elephantsql.com/demvidab";

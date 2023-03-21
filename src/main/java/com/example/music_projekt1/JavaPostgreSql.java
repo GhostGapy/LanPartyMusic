@@ -266,9 +266,8 @@ public class JavaPostgreSql {
 
                 if (rs.next()) {
                     String correctPassword = rs.getString("team_pass");
-                    String pass1 = PasswordHasher.hashPassword(_password);
-                    System.out.println(pass1 + "  " + correctPassword);
-                    if (pass1.equals(correctPassword)) {
+                    System.out.println(_password + "  " + correctPassword);
+                    if (_password.equals(correctPassword)) {
                         joinTeam(teamID, userID);
                         return true;
                     } else {
@@ -294,8 +293,6 @@ public class JavaPostgreSql {
                 ex.printStackTrace();
                 return false;
 
-            } catch (NoSuchAlgorithmException e) {
-                throw new RuntimeException(e);
             }
         }
     }

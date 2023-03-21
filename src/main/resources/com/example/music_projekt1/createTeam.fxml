@@ -81,7 +81,7 @@
                   <Insets left="30.0" />
                </GridPane.margin>
                <children>
-                  <Button fx:id="selectFile_btn" mnemonicParsing="false" prefHeight="25.0" prefWidth="88.0" text="Select file">
+                  <Button fx:id="selectFile_btn" onAction="#editimg" mnemonicParsing="false" prefHeight="25.0" prefWidth="88.0" text="Select file">
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin>
